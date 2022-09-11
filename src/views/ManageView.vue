@@ -7,7 +7,7 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: left; font-size: 12px;border-bottom: 1px solid #ccc;line-height: 60px" >
+        <el-header style="text-align: left; font-size: 12px;border-bottom: 1px solid #ccc;line-height: 60px;background-color: #cccccc;">
           <head-mall :user =user></head-mall>
         </el-header>
 
@@ -47,3 +47,7 @@ export default {
 
 };
 </script>
+
+<style scoped>
+
+</style>

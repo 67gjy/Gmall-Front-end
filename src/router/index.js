@@ -14,7 +14,9 @@ const routes = [
       {path: 'home', name: '首页', component: () => import('../views/HomeView')},
       {path: 'user', name: '用户管理', component: () => import('../views/UserView')},
       {path: 'Person', name: '个人信息', component: () => import('../views/PersonView')},
-      {path: 'file', name: '文件管理', component: () => import('../views/FileView')}
+      {path: 'file', name: '文件管理', component: () => import('../views/FileView')},
+      {path: 'role', name: '角色管理', component: () => import('../views/RoleView')},
+      {path: 'menu', name: '菜单管理', component: () => import('../views/MenuView')}
     ]
   },
   {
