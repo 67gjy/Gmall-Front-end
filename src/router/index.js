@@ -6,20 +6,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'ManageView',
-    component: () => import('../views/ManageView'),
-    redirect: "/home",
-    children:[
-      {path: 'home', name: '首页', component: () => import('../views/HomeView')},
-      {path: 'user', name: '用户管理', component: () => import('../views/UserView')},
-      {path: 'Person', name: '个人信息', component: () => import('../views/PersonView')},
-      {path: 'file', name: '文件管理', component: () => import('../views/FileView')},
-      {path: 'role', name: '角色管理', component: () => import('../views/RoleView')},
-      {path: 'menu', name: '菜单管理', component: () => import('../views/MenuView')}
-    ]
-  },
-  {
     path: '/about',
     name: 'about',
     // route level code-splitting
@@ -36,6 +22,11 @@ const routes = [
     path: '/register',
     name: 'RegisterView',
     component: () => import( '../views/RegisterView')
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import( '../views/404')
   }
 ]
 
@@ -45,10 +36,67 @@ const router = new VueRouter({
   routes
 })
 
+//重置路由
+// export const resetRoutes = () =>{
+//   router.matcher =new VueRouter({
+//     mode: 'history',
+//     base: process.env.BASE_URL,
+//     routes
+//   })
+// }
+
+
+export const setRoutes = () =>{
+  const storeMenus = localStorage.getItem("menus");
+  if (storeMenus){
+    //获取当前路由对象名称数组
+    const currentRoutesNames = router.getRoutes().map(v => v.name)
+    if (!currentRoutesNames.includes('ManageView')){
+      //拼装动态路由
+      const manageRoute = {
+        path: '/',
+        name: 'ManageView',
+        component: () => import('../views/ManageView'),
+        redirect: "/home",
+        children:[
+          {path : 'person',name: '个人信息',component: () => import('../views/PersonView')}
+        ]
+      }
+      const menus = JSON.parse(storeMenus)
+      menus.forEach(item => {
+        if (item.path){
+          let itemMenu = {path: item.path.replace("/",""), name: item.name, component: () => import('../views/'+item.pagePath +'')}
+          manageRoute.children.push(itemMenu)
+        }else if (item.children.length){
+          item.children.forEach(item => {
+            if (item.path){
+              let itemMenu = {path: item.path.replace("/",""), name: item.name, component: () => import('../views/' +item.pagePath + '')}
+              manageRoute.children.push(itemMenu)
+            }
+          })
+        }
+      })
+      //动态添加
+      router.addRoute(manageRoute)
+    }
+  }
+}
+
+setRoutes()
+
 
 router.beforeEach((to,from,next) => {
   localStorage.setItem("currentPathName",to.name)
   store.commit("setPath")
+  const storeMenus = localStorage.getItem("menus")
+  //未找到路由
+  if(!to.matched .length){
+    if (storeMenus){
+      next("/404")
+    }else {
+      next("/login")
+    }
+  }
   next()
 })
 

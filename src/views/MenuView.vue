@@ -7,7 +7,7 @@
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增</el-button>
+      <el-button type="primary" @click="handleAdd('')">新增</el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='好的'
@@ -30,13 +30,14 @@
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="名称" ></el-table-column>
       <el-table-column prop="path" label="路径" ></el-table-column>
+      <el-table-column prop="pagePath" label="页面路径" ></el-table-column>
       <el-table-column label="图标" >
         <template slot-scope="scope">
           <i :class="scope.row.icon" />
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" ></el-table-column>
-      <el-table-column  label="操作">
+      <el-table-column  label="操作" width="300">
         <template slot-scope="scope">
           <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.path">新增子菜单</el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑</el-button>
@@ -76,6 +77,9 @@
         </el-form-item>
         <el-form-item label="路径">
           <el-input v-model="form.path" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="页面路径">
+          <el-input v-model="form.pagePath" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图标">
           <template >
@@ -157,10 +161,6 @@ export default {
     handleEdit(row){
       this.form = JSON.parse(JSON.stringify(row))
       this.dialogFormVisible = true
-      //请求图标数据
-      this.request.get("/menu/icons").then(res => {
-        this.options = res.data
-      })
     },
     handleAdd(pid){
       this.dialogFormVisible = true
@@ -180,6 +180,11 @@ export default {
         }
       }).then(res => {
         this.tableData=res.data
+      })
+
+      //请求图标数据
+      this.request.get("/menu/icons").then(res => {
+        this.options = res.data
       })
     },
     handleSizeChange(pageSize){

@@ -7,7 +7,7 @@
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增</el-button>
+      <el-button type="primary" @click="handleAdd()">新增</el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='好的'
@@ -29,6 +29,7 @@
       <el-table-column type="selection" width="55" ></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="名称" ></el-table-column>
+      <el-table-column prop="flag" label="唯一标识" ></el-table-column>
       <el-table-column prop="description" label="描述" ></el-table-column>
       <el-table-column  label="操作">
         <template slot-scope="scope">
@@ -68,6 +69,9 @@
         <el-form-item label="名称">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="唯一标识">
+          <el-input v-model="form.flag" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="form.description" autocomplete="off"></el-input>
         </el-form-item>
@@ -84,6 +88,7 @@
           ref="tree"
           show-checkbox
           node-key="id"
+          :check-strictly="true"
           :default-expanded-keys="expends"
           :default-checked-keys="checks">
         <span class="custom-tree-node" slot-scope="{ data }">
@@ -94,7 +99,6 @@
         <el-button @click="dialogMenuVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveRoleMenu" >确 定</el-button>
       </div>
-      <el-button type="primary" @click="saveRoleMenu" >确 定</el-button>
     </el-dialog>
   </div>
 </template>
@@ -120,7 +124,8 @@ export default {
       },
       expends:[],
       checks:[],
-      roleId: 0
+      roleId: 0,
+      roleFlag: ''
     }
   },
   created() {
@@ -150,6 +155,9 @@ export default {
         if (res.code === "200"){
           this.$message.success("绑定成功")
           this.dialogMenuVisible = false
+          if (this.roleFlag === 'ROLE_ADMIN'){
+            this.$store.commit("logout")
+          }
         }else {
           this.$message.error(res.message)
         }
@@ -217,6 +225,7 @@ export default {
     selectMenu(role){
      this.dialogMenuVisible = true
       this.roleId = role.id
+      this.roleFlag = role.flag
       //请求菜单
       this.request.get("/menu").then(res => {
         this.menuData =res.data
@@ -225,6 +234,14 @@ export default {
       this.request.get("/role/roleMenu/" + this.roleId).then(res => {
         this.checks = res.data
       })
+      // this.request.get("/menu/ids"+this.roleId).then(res => {
+      //   const ids = res.data
+      //   ids.forEach(id => {
+      //     if (!this.checks.includes(id)){
+      //       this.$refs.tree.setChecked(id,false)
+      //     }
+      //   })
+      // })
     },
 
   }
