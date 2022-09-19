@@ -199,7 +199,7 @@ export default {
     },
     //导出
     exp(){
-      window.open("http://localhost:9090/menu/export")
+      window.open("http://43.142.177.50:9090/menu/export")
     },
     handleExcelImportSuccess(){
       this.$message.success("导入成功")

@@ -21,7 +21,7 @@
       >
         <el-button type="danger" slot="reference">批量删除</el-button>
       </el-popconfirm>
-      <el-upload action="http://localhost:9090/user/import" style="display: inline-block" class="mr-5" accept="xlsx" :show-file-list="false" :on-success="handleExcelImportSuccess">
+      <el-upload :action="'http://'+serverIp+':9090/user/import'" style="display: inline-block" class="mr-5" accept="xlsx" :show-file-list="false" :on-success="handleExcelImportSuccess">
       <el-button class="ml-5" type="primary">导入</el-button>
       </el-upload>
       <el-button type="primary" @click="exp">导出</el-button>
@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "UserView",
   data(){
@@ -114,7 +116,8 @@ export default {
       multipleSelection:[],
       dialogFormVisible: false,
       form:{},
-      roles: []
+      roles: [],
+      serverIp: serverIp
     }
   },
   created() {
@@ -202,7 +205,7 @@ export default {
     },
     //导出
     exp(){
-      window.open("http://localhost:9090/user/export")
+      window.open("http://43.142.177.50:9090/user/export")
     },
     handleExcelImportSuccess(){
       this.$message.success("导入成功")
