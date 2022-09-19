@@ -1,3 +1,4 @@
+<!--展示组件页面-->
 <template>
   <div style="height: 100%">
     <el-container style="height: 100%; border: 1px solid #eee">

@@ -1,3 +1,4 @@
+<!--注册页面-->
 <template>
   <div class="wrapper">
     <div style="margin: 200px auto;background-color:#fff;width: 350px;height: 400px;padding: 20px;border-radius: 10px">

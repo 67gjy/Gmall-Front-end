@@ -1,3 +1,4 @@
+<!--展示用户注册人数以及会员人数，待后期更改-->
 <template>
 <div>
   <el-row :gutter="10" style="margin-bottom: 40px;">

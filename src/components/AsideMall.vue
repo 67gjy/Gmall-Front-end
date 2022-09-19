@@ -1,3 +1,4 @@
+<!--此文件为侧边栏的vue组件-->
 <template>
 
   <el-menu :default-openeds="opens" style="height: 100%;overflow-x:hidden" router>

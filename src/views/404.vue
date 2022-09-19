@@ -1,3 +1,4 @@
+<!--404页面，暂未编写-->
 <template>
 <div>
   <span>404</span>

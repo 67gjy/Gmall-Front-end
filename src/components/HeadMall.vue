@@ -1,3 +1,4 @@
+<!--此文件为头部的vue组件-->
 <template>
   <div style="line-height: 60px;display: flex;">
     <div style="flex: 1">
